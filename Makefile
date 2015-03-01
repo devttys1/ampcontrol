@@ -4,7 +4,7 @@ DISPLAY = ST7920
 lc = $(shell echo $1 | tr A-Z a-z)
 
 # Fimware file base name
-TARG = ampcontrol_m32fb_$(call lc,$(DISPLAY))
+TARG = ampcontrol_m64fb_$(call lc,$(DISPLAY))
 
 AUDIO_SRC = $(wildcard audio/*.c)
 TUNER_SRC = $(wildcard tuner/*.c)
@@ -20,7 +20,7 @@ endif
 
 SRCS = $(wildcard *.c) $(AUDIO_SRC) $(TUNER_SRC) $(FONTS_SRC) $(ICONS_SRC) $(DISP_SRC)
 
-MCU = atmega32
+MCU = atmega64
 F_CPU = 16000000L
 
 OPTIMIZE = -O2 -mcall-prologues -fshort-enums -ffunction-sections -fdata-sections

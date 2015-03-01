@@ -40,7 +40,7 @@
 #define KS0108_RES			A
 #define KS0108_RES_LINE		(1<<7)
 /* KS0108 Backlight port */
-#define KS0108_BCKL			C
+#define KS0108_BCKL			D
 #define KS0108_BCKL_LINE	(1<<7)
 
 /* ST7920 Data port*/
@@ -76,31 +76,31 @@
 #define ST7920_BCKL_LINE	(1<<7)
 
 /* RC5 definitions*/
-#define RC5					D
-#define RC5_LINE			(1<<3)
+#define RC5					E
+#define RC5_LINE			(1<<4)
 
 /* Standby/Mute port definitions */
-#define STMU_MUTE			C
+#define STMU_MUTE			D
 #define STMU_MUTE_LINE		(1<<5)
-#define STMU_STBY			C
+#define STMU_STBY			D
 #define STMU_STBY_LINE		(1<<6)
 
 /* Encoder definitions */
-#define ENCODER_A			D
-#define ENCODER_A_LINE		(1<<1)
-#define ENCODER_B			D
-#define ENCODER_B_LINE		(1<<2)
+#define ENCODER_A			C
+#define ENCODER_A_LINE		(1<<2)
+#define ENCODER_B			C
+#define ENCODER_B_LINE		(1<<1)
 
 /* Buttons definitions */
-#define BUTTON_1			D
+#define BUTTON_1			C
 #define BUTTON_1_LINE		(1<<0)
-#define BUTTON_2			D
+#define BUTTON_2			C
 #define BUTTON_2_LINE		(1<<4)
-#define BUTTON_3			D
+#define BUTTON_3			C
 #define BUTTON_3_LINE		(1<<5)
-#define BUTTON_4			D
+#define BUTTON_4			C
 #define BUTTON_4_LINE		(1<<6)
-#define BUTTON_5			D
+#define BUTTON_5			C
 #define BUTTON_5_LINE		(1<<7)
 
 /* Ext function options */
@@ -109,27 +109,27 @@
 #define USE_PGA2310			(1<<2)
 
 /* 1-wire definitions */
-#define ONE_WIRE			C
-#define ONE_WIRE_LINE		(1<<2)
-#define FAN1				C
-#define FAN1_WIRE			(1<<3)
-#define FAN2				C
-#define FAN2_WIRE			(1<<4)
+#define ONE_WIRE			E
+#define ONE_WIRE_LINE		(1<<0)
+#define FAN1				E
+#define FAN1_WIRE			(1<<2)
+#define FAN2				E
+#define FAN2_WIRE			(1<<3)
 
 /* LM7001 definitions */
-#define LM7001_DATA			C
-#define LM7001_DATA_LINE	(1<<2)
-#define LM7001_CL			C
-#define LM7001_CL_LINE		(1<<3)
-#define LM7001_CE			C
-#define LM7001_CE_LINE		(1<<4)
+#define LM7001_DATA			E
+#define LM7001_DATA_LINE	(1<<0)
+#define LM7001_CL			E
+#define LM7001_CL_LINE		(1<<2)
+#define LM7001_CE			E
+#define LM7001_CE_LINE		(1<<3)
 
 /* PGA2310 definitions */
-#define PGA2310_SDI			C
-#define PGA2310_SDI_LINE	(1<<2)
-#define PGA2310_SCLK		C
-#define PGA2310_SCLK_LINE	(1<<3)
-#define PGA2310_CS			C
-#define PGA2310_CS_LINE		(1<<4)
+#define PGA2310_SDI			E
+#define PGA2310_SDI_LINE	(1<<0)
+#define PGA2310_SCLK		E
+#define PGA2310_SCLK_LINE	(1<<2)
+#define PGA2310_CS			E
+#define PGA2310_CS_LINE		(1<<3)
 
 #endif /* PINS_H */
