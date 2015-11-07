@@ -59,10 +59,11 @@ void inputInit(void)
 	PORT(ENCODER_B) |= ENCODER_B_LINE;
 
 	/* Set timer prescaller to 128 (125 kHz) and reset on match*/
-	TCCR2 = ((1<<CS22) | (0<<CS21) | (1<<CS20) | (1<<WGM21));
-	OCR2 = 125;										/* 125000/125 => 1000 polls/sec */
+	TCCR2B = ((1<<CS22) | (0<<CS21) | (1<<CS20));
+	TCCR2A = ((1<<WGM21));
+	OCR2A = 125;									/* 125000/125 => 1000 polls/sec */
 	TCNT2 = 0;										/* Reset timer value */
-	TIMSK |= (1<<OCIE2);							/* Enable timer compare match interrupt */
+	TIMSK2 |= (1<<OCIE2A);							/* Enable timer compare match interrupt */
 
 	rcCodesInit();
 
@@ -87,7 +88,7 @@ static uint8_t rcCmdIndex(uint8_t cmd)
 	return CMD_RC_END;
 }
 
-ISR (TIMER2_COMP_vect)
+ISR (TIMER2_COMPA_vect)
 {
 	static int16_t btnCnt = 0;						/* Buttons press duration value */
 	static uint16_t rcTimer;
