@@ -165,4 +165,11 @@ enum {
 #define PGA2310_CS			C
 #define PGA2310_CS_LINE		(1<<4)
 
+#define PGA2310_IN0			A
+#define PGA2310_IN0_LINE	(1<<5)
+#define PGA2310_IN1			A
+#define PGA2310_IN1_LINE	(1<<6)
+#define PGA2310_IN2			A
+#define PGA2310_IN2_LINE	(1<<7)
+
 #endif /* PINS_H */

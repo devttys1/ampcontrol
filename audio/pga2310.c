@@ -4,6 +4,7 @@
 #include "../pins.h"
 
 static sndParam *sndPar;
+static uint8_t input;
 
 static void pga2310Strob(void)
 {
@@ -51,6 +52,12 @@ void pga2310Init(sndParam *sp)
 	PORT(PGA2310_SCLK) &= ~PGA2310_SCLK_LINE;
 	PORT(PGA2310_CS) |= PGA2310_CS_LINE;
 
+	DDR(PGA2310_IN0) |= PGA2310_IN0_LINE;
+	DDR(PGA2310_IN1) |= PGA2310_IN1_LINE;
+	DDR(PGA2310_IN2) |= PGA2310_IN2_LINE;
+
+	pga2310SetInput(PGA2310_IN_CNT);
+
 	return;
 }
 
@@ -79,8 +86,32 @@ void pga2310SetMute(uint8_t val)
 {
 	if (val == MUTE_ON) {
 		pga2310SendGainLevels(PGA2310_MUTE, PGA2310_MUTE);
+		pga2310SetInput(PGA2310_IN_CNT);
 	} else {
 		pga2310SetSpeakers(0);
+		pga2310SetInput(input);
+	}
+
+	return;
+}
+
+void pga2310SetInput(uint8_t in)
+{
+	PORT(PGA2310_IN0) &= ~PGA2310_IN0_LINE;
+	PORT(PGA2310_IN1) &= ~PGA2310_IN1_LINE;
+	PORT(PGA2310_IN2) &= ~PGA2310_IN2_LINE;
+
+	if (in == 0) {
+		PORT(PGA2310_IN0) |= PGA2310_IN0_LINE;
+		input = in;
+	}
+	if (in == 1) {
+		PORT(PGA2310_IN1) |= PGA2310_IN1_LINE;
+		input = in;
+	}
+	if (in == 2) {
+		PORT(PGA2310_IN2) |= PGA2310_IN2_LINE;
+		input = in;
 	}
 
 	return;

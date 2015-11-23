@@ -272,6 +272,9 @@ void sndSetInput(uint8_t input)
 	case AUDIOPROC_PT2314:
 		tda731xSetInput(_input);
 		break;
+	case AUDIOPROC_PGA2310:
+		pga2310SetInput(_input);
+		break;
 	default:
 		break;
 	}
