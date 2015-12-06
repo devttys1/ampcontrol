@@ -99,6 +99,7 @@ int main(void)
 		/* Check if we need exit to default mode*/
 		handleExitDefaultMode();
 
+		while (!gdReady);
 		/* Switch to timer mode if it expires */
 		handleTimers();
 
@@ -107,6 +108,7 @@ int main(void)
 
 		/* Show things */
 		showScreen();
+		gdReady = 0;
 	}
 
 	return 0;

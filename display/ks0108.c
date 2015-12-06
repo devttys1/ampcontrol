@@ -24,6 +24,8 @@
 static uint8_t fb[KS0108_COLS * KS0108_CHIPS][KS0108_ROWS];
 static uint8_t _br;
 
+volatile uint8_t gdReady;
+
 void ks0108SetBrightness(uint8_t br)
 {
 	_br = br;
@@ -95,35 +97,39 @@ ISR (TIMER0_OVF_vect)
 
 	static uint8_t br;
 
-	if (j == 64) {									/* Phase 1 (Y) */
-		if (++i >= 8) {
-			i = 0;
-			if (++cs >= KS0108_CHIPS)
-				cs = 0;
-			switch (cs) {
-			case 1:
-				KS0108_SET_CS2();
-				break;
-			default:
-				KS0108_SET_CS1();
-				break;
+	if (!gdReady) {
+		if (j == 64) {									/* Phase 1 (Y) */
+			if (++i >= 8) {
+				i = 0;
+				if (++cs >= KS0108_CHIPS)
+					cs = 0;
+				switch (cs) {
+				case 1:
+					KS0108_SET_CS2();
+					break;
+				default:
+					KS0108_SET_CS1();
+					break;
+				}
 			}
+			PORT(KS0108_DI) &= ~KS0108_DI_LINE;			/* Go to command mode */
+			ks0108SetPort(KS0108_SET_PAGE + i);
+		} else if (j == 65) {							/* Phase 2 (X) */
+			ks0108SetPort(KS0108_SET_ADDRESS);
+		} else {										/* Phase 3 (32 bytes of data) */
+			ks0108SetPort(fb[j + 64 * cs][i]);
 		}
-		PORT(KS0108_DI) &= ~KS0108_DI_LINE;			/* Go to command mode */
-		ks0108SetPort(KS0108_SET_PAGE + i);
-	} else if (j == 65) {							/* Phase 2 (X) */
-		ks0108SetPort(KS0108_SET_ADDRESS);
-	} else {										/* Phase 3 (32 bytes of data) */
-		ks0108SetPort(fb[j + 64 * cs][i]);
-	}
 
-	PORT(KS0108_E) |= KS0108_E_LINE;				/* Strob */
-	asm("nop");
-	PORT(KS0108_E) &= ~KS0108_E_LINE;
+		PORT(KS0108_E) |= KS0108_E_LINE;				/* Strob */
+		asm("nop");
+		PORT(KS0108_E) &= ~KS0108_E_LINE;
 
-	if (++j >= 66) {
-		j = 0;
-		PORT(KS0108_DI) |= KS0108_DI_LINE;			/* Go to data mode */
+		if (++j >= 66) {
+			j = 0;
+			PORT(KS0108_DI) |= KS0108_DI_LINE;			/* Go to data mode */
+		}
+
+		gdReady = (i == 0 && j == 0 && cs == 0);
 	}
 
 	if (++br >= KS0108_MAX_BRIGHTNESS)				/* Loop brightness */

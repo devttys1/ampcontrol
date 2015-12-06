@@ -8,6 +8,8 @@
 static uint8_t fb[ST7920_SIZE_X / 4][ST7920_SIZE_Y / 2];
 static uint8_t _br;
 
+volatile uint8_t gdReady;
+
 void st7920SetBrightness(uint8_t br)
 {
 	_br = br;
@@ -76,24 +78,28 @@ ISR (TIMER0_OVF_vect)
 
 	static uint8_t br;
 
-	if (j == 32) {									/* Phase 1 (Y) */
-		PORT(ST7920_RS) &= ~ST7920_RS_LINE;			/* Go to command mode */
-		if (++i >= 32)
-			i = 0;
-		st7920SetPort(ST7920_SET_GRAPHIC_RAM | i);	/* Set Y */
-	} else if (j == 33) {							/* Phase 2 (X) */
-		st7920SetPort(ST7920_SET_GRAPHIC_RAM);		/* Set X */
-	} else {										/* Phase 3 (32 bytes of data) */
-		st7920SetPort(fb[j][i]);
-	}
+	if (!gdReady) {
+		if (j == 32) {									/* Phase 1 (Y) */
+			PORT(ST7920_RS) &= ~ST7920_RS_LINE;			/* Go to command mode */
+			if (++i >= 32)
+				i = 0;
+			st7920SetPort(ST7920_SET_GRAPHIC_RAM | i);	/* Set Y */
+		} else if (j == 33) {							/* Phase 2 (X) */
+			st7920SetPort(ST7920_SET_GRAPHIC_RAM);		/* Set X */
+		} else {										/* Phase 3 (32 bytes of data) */
+			st7920SetPort(fb[j][i]);
+		}
 
-	PORT(ST7920_E) |= ST7920_E_LINE;				/* Strob */
-	asm("nop");
-	PORT(ST7920_E) &= ~ST7920_E_LINE;
+		PORT(ST7920_E) |= ST7920_E_LINE;				/* Strob */
+		asm("nop");
+		PORT(ST7920_E) &= ~ST7920_E_LINE;
 
-	if (++j >= 34) {
-		j = 0;
-		PORT(ST7920_RS) |= ST7920_RS_LINE;			/* Go to data mode */
+		if (++j >= 34) {
+			j = 0;
+			PORT(ST7920_RS) |= ST7920_RS_LINE;			/* Go to data mode */
+		}
+
+		gdReady = (i == 0 && j == 0);
 	}
 
 	if (++br >= ST7920_MAX_BRIGHTNESS)				/* Loop brightness */

@@ -49,6 +49,8 @@ enum {
 	FONT_DIR_270
 };
 
+extern volatile uint8_t gdReady;
+
 inline void gdInit(void);
 inline void gdClear(void);
 
