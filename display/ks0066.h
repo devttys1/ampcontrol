@@ -14,8 +14,13 @@
 #define KS0066_SCREEN_HEIGHT		2
 #define KS0066_WIRE_8BIT
 #endif
+#ifdef KS0066_20X4
+#define KS0066_SCREEN_WIDTH			20
+#define KS0066_SCREEN_HEIGHT		4
+#define KS0066_WIRE_4BIT
+#endif
 
-/* KS0066 wiring type, if not set any, autoselect KS0066_WIRE_8BIT */
+/* KS0066 wiring type, if not set any, autoselect KS0066_WIRE_4BIT */
 #ifndef KS0066_WIRE_8BIT
 #ifndef KS0066_WIRE_4BIT
 #ifndef KS0066_WIRE_PCF8574
