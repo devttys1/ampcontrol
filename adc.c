@@ -37,8 +37,8 @@ void adcInit(void)
 	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (0<<ADPS0);
 	ADMUX |= (1<<ADLAR);								/* Adjust result to left (8bit ADC) */
 
-	TIMSK |= (1<<TOIE0);								/* Enable Timer0 overflow interrupt */
-	TCCR0 |= (0<<CS02) | (1<<CS01) | (0<<CS00);			/* Set timer prescaller to 8 (2MHz) */
+	TIMSK0 |= (1<<TOIE0);								/* Enable Timer0 overflow interrupt */
+	TCCR0B |= (0<<CS02) | (1<<CS01) | (0<<CS00);			/* Set timer prescaller to 8 (2MHz) */
 
 	adcCorrLeft = eeprom_read_byte((uint8_t*)EEPROM_ADC_CORR_L);
 	adcCorrRight = eeprom_read_byte((uint8_t*)EEPROM_ADC_CORR_R);

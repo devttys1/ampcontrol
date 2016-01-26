@@ -2,7 +2,7 @@ DISPLAY = KS0108A
 
 TARG = ampcontrol_m32_$(shell echo $(DISPLAY) | tr A-Z a-z)
 
-MCU = atmega32
+MCU = atmega2560
 F_CPU = 16000000L
 
 AUDIO_SRC = $(wildcard audio/*.c)

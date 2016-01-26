@@ -9,13 +9,13 @@ static volatile uint8_t ovfCnt = 250;				// Overflow counter
 
 void rcInit(void)
 {
-	MCUCR |= (1<<ISC10);							// Set INT1 to trigger on any edge
+	EICRA |= (1<<ISC10);							// Set INT1 to trigger on any edge
 	DDR(RC) &= ~RC_LINE;							// Set PD3 (INT1) to input
 	TCCR1A = 0;										// Reset Timer1 counter
 	TCCR1B = (1<<CS11);								// Set Timer1 prescaler to 8 (2MHz)
-	GICR |= (1<<INT1);								// Enable INT3 interrupt
+	EIMSK |= (1<<INT1);								// Enable INT3 interrupt
 
-	TIMSK = (1<<TOIE1);								// Enable Timer1 overflow interrupt
+	TIMSK0 = (1<<TOIE1);								// Enable Timer1 overflow interrupt
 
 	return;
 }

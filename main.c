@@ -7,8 +7,8 @@
 #include "remote.h"
 #include "i2c.h"
 #include "display.h"
-#include "tuner/tuner.h"
-#include "temp.h"
+//#include "tuner/tuner.h"
+//#include "temp.h"
 #include "actions.h"
 
 static uint8_t extFunc;
@@ -17,13 +17,13 @@ static uint8_t extFunc;
 static void hwInit(void)
 {
 	extFunc = eeprom_read_byte((uint8_t*)EEPROM_EXT_FUNC);
-
+	#if 0
 	loadTempParams();
 	if (extFunc == USE_DS18B20) {
 		ds18x20SearchDevices();
 		tempInit();							/* Init temperature control */
 	}
-
+	#endif
 	I2CInit();								/* I2C bus */
 	displayInit();							/* Load params and text labels before fb scan started */
 	rcInit();								/* IR Remote control */
@@ -32,7 +32,7 @@ static void hwInit(void)
 
 	sei();									/* Gloabl interrupt enable */
 
-	tunerInit(extFunc);						/* Tuner */
+	//tunerInit(extFunc);						/* Tuner */
 
 	DDR(STMU_STBY) |= STMU_STBY_LINE;		/* Standby port */
 	DDR(STMU_MUTE) |= STMU_MUTE_LINE;		/* Mute port */
@@ -50,13 +50,14 @@ int main(void)
 
 	/* Init hardware */
 	hwInit();
-
+	#if 0
 	if (extFunc == USE_DS18B20) {
 		ds18x20ConvertTemp();
 		setSensTimer(TEMP_MEASURE_TIME);
 	}
-
+	#endif
 	while (1) {
+		#if 0
 		/* Control temperature */
 		if (extFunc == USE_DS18B20) {
 			if (getSensTimer() == 0) {
@@ -66,7 +67,7 @@ int main(void)
 			}
 			tempControlProcess();
 		}
-
+		#endif
 		/* Emulate poweroff if any of timers expired */
 		if (getStbyTimer() == 0 || getSilenceTimer() == 0)
 			action = CMD_RC_STBY;
